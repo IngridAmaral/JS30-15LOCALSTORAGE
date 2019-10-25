@@ -33,20 +33,24 @@
     function addItem(e) {
         e.preventDefault(); //prevents the page refresh/reload, because we want the item to stick to it
         const text = (this.querySelector('[name=item]')).value; //or document.querySelector('[name=item]'), you can you this because it will be de actual form we're using and is going to search for the element name=item
-        const item = {
-            text: text,
+        let item = {
+            text,
             done: false
         };
+
         items.push(item);
-        populateList(items, itemsList)
-        this.reset() //clear/reset the inside of the form input
+        populateList(items, itemsList);
+        this.reset(); //clear/reset the inside of the form input
     }
 
+    //this function re-render every time the platesList and not just to add the new item, so for performance would be better to just add the new item
     function populateList(plates = [], platesList) { //set the plates to an empty array to prevent the code from breaking if nothing is passed, so looping through an empty array won't affect
-        platesList.innetHtml = plates.map((plate, i) => {
+        platesList.innerHTML = plates.map((plate, i) => {
+            //the item${i} will link the input with the label id/for
             return `
                 <li>
-                    <label for="">${plate.text}</label>    
+                    <input type="checkbox" id="item${i}" data-index=${i} /> 
+                    <label for="item${i}">${plate.text}</label>   
                 </li>
             `;
         }).join('');
