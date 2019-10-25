@@ -23,9 +23,19 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <form class="change-checkbox">
+        <input type="submit" value="Reset">
+        <input type="submit" value="Check All">
+        <input type="submit" value="Uncheck All">
+    </form>
   </div>
 
 <script>
+
+    const resetBtn = document.querySelector('input[value="Reset"]');
+    const checkAll = document.querySelector('input[value="Check All"]');
+    const uncheck = document.querySelector('input[value="Uncheck All"]');
+
     const addItems = document.querySelector('.add-items');
     const itemsList = document.querySelector('.plates');
     const items = JSON.parse(localStorage.getItem('items')) || []; //if there's nothing in the local storage it will start with the empty array
@@ -68,10 +78,31 @@
         populateList(items, itemsList); //updating
     }
 
+    function resetPage() {
+        localStorage.clear();
+    };
+
+    function allChecked() {
+       items.forEach(item => {
+         item.done = true       
+       });
+       localStorage.setItem('items', JSON.stringify(items))
+    }
+
+    function noneChecked() {
+       items.forEach(item => {
+         item.done = false       
+       });
+       localStorage.setItem('items', JSON.stringify(items))
+    }
+
     addItems.addEventListener('submit', addItem);
     populateList(items, itemsList);
     itemsList.addEventListener('click', toggleDone);
 
+    resetBtn.addEventListener('click', resetPage);
+    checkAll.addEventListener('click', allChecked)
+    uncheck.addEventListener('click', noneChecked)
 </script>
 
 
